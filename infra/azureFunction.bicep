@@ -172,7 +172,7 @@ module functionFhirServiceRoleAssignment './roleAssignment.bicep' = if (createRo
 }
 
 @description('Setup access between FHIR and the deployment script managed identity')
-module functionApiForFhirRoleAssignment './roleAssignment.bicep' = if (createRoleAssignment == true) {
+module functionApiForFhirRoleAssignment './roleAssignment.bicep' = if (createRoleAssignment == true && (fhirserviceRg != apiforFhirRg)) {
   name: 'bulk-import-function-fhir-managed-id-role-assignment'
   scope: resourceGroup(apiForFhirsubid,apiforFhirRg)
   params: {

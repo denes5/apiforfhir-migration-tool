@@ -21,7 +21,7 @@ param apiForFhirid string = ''
 
 @description('Repo URL containing code to build the migration tool.')
 #disable-next-line no-hardcoded-env-urls
-param deploymentRepoUrl string = 'https://github.com/Azure/apiforfhir-migration-tool/'
+param deploymentRepoUrl string = 'https://github.com/denes5/apiforfhir-migration-tool/'
 
 @description('Used if you want to use an existing Log Analytics Workspace.')
 param existingLogAnalyticsWorkspaceName string = ''
@@ -64,6 +64,8 @@ var appTags = {
 var logAnalyticsName = length(existingLogAnalyticsWorkspaceName) == 0 ? '${resourceName}-la' : existingLogAnalyticsWorkspaceName
 var appInsightsName = '${resourceName}-appins'
 var fhirServiceNameUrl = 'https://${replace(fhirServiceName, '/', '-')}.fhir.azurehealthcareapis.com' 
+var fhirServiceNameSplit = split(fhirServiceName,'/')
+var fhirServiceTokenUrl = 'https://${fhirServiceNameSplit[1]}.fhir.azurehealthcareapis.com'
 var apiForFhirNameUrl = 'https://${apiForFhirName}.azurehealthcareapis.com'
 
 var fhirResourceIdSplit = split(fhirid,'/')
@@ -118,6 +120,7 @@ module function './azureFunction.bicep'= {
         appInsightsInstrumentationKey: monitoring.outputs.appInsightsInstrumentationKey
         functionSettings: union({
                 AZURE_DestinationUri: fhirServiceNameUrl
+                AZURE_DestinationTokenUri: fhirServiceTokenUrl
                 AZURE_SourceUri: apiForFhirNameUrl
                 AZURE_AppInsightConnectionstring: monitoring.outputs.appInsightsInstrumentationString
             }, functionAppCustomSettings)

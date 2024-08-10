@@ -47,6 +47,8 @@ param functionAppCustomSettings object = {}
 param createRoleAssignment bool = true
 
 var fhirServiceNameUrl = 'https://${replace(fhirServiceName, '/', '-')}.fhir.azurehealthcareapis.com' 
+var fhirServiceNameSplit = split(fhirServiceName,'/')
+var fhirServiceTokenUrl = 'https://${fhirServiceNameSplit[1]}.fhir.azurehealthcareapis.com'
 var apiForFhirNameUrl = 'https://${apiForFhirName}.azurehealthcareapis.com'
 
 @description('Storage account to configure for export from Azure API for FHIR and import to FHIR Service')

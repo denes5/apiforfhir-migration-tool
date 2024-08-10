@@ -97,6 +97,7 @@ public class Program
 
         var baseUri = config.SourceUri;
         var desUri = config.DestinationUri;
+        var desTokenUri = config.DestinationTokenUri;
         string[]? scopes = default;
 
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -117,7 +118,7 @@ public class Program
             client.BaseAddress = desUri;
         })
         .AddPolicyHandler(GetRetryPolicy())
-        .AddHttpMessageHandler(x => new BearerTokenHandler(credential, desUri, scopes));
+        .AddHttpMessageHandler(x => new BearerTokenHandler(credential, desTokenUri, scopes));
 #pragma warning restore CS8604 // Possible null reference argument.
 
     })
